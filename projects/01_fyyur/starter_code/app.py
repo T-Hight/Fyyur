@@ -24,7 +24,8 @@ app.config.from_object('config')
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
-# $ TODO: connect to a local postgresql database
+# TODO: connect to a local postgresql database
+# TODO: Done
 
 #----------------------------------------------------------------------------#
 # Models.
@@ -51,7 +52,8 @@ class Venue(db.Model):
     def __repr__(self):
        return '<Venue {}'.format(self.name)
 
-    # $ TODO: implement any missing fields, as a database migration using Flask-Migrate
+    # TODO: implement any missing fields, as a database migration using Flask-Migrate
+    # TODO: Done
 
 class Artist(db.Model):
     __tablename__ = 'artists'
@@ -72,7 +74,8 @@ class Artist(db.Model):
     def __repr__(self):
        return '<Artist {}'.format(self.name)
 
-    # $ TODO: implement any missing fields, as a database migration using Flask-Migrate
+    # TODO: implement any missing fields, as a database migration using Flask-Migrate
+    # TODO: Done
 
 class Show(db.Model):
     __tablename__ = 'shows'
@@ -85,7 +88,8 @@ class Show(db.Model):
     def __repr__(self):
        return '<Show {}{}'.format(self.artist_id, self.venue_id)
 
-# $ TODO Implement Show and Artist models, and complete all model relationships and properties, as a database migration.
+# TODO Implement Show and Artist models, and complete all model relationships and properties, as a database migration.
+# TODO: Done
 
 #----------------------------------------------------------------------------#
 # Filters.
@@ -115,8 +119,9 @@ def index():
 
 @app.route('/venues')
 def venues():
-  # $ TODO: replace with real venues data.
+  # TODO: replace with real venues data.
   #       num_upcoming_shows should be aggregated based on number of upcoming shows per venue.
+  # TODO: Done
 
   locals=[]
   venues = Venue.query.all()
@@ -136,40 +141,18 @@ def venues():
   
   return render_template('pages/venues.html', areas=locals)
 
-@app.route('/venues/search', methods=['POST'])
+@app.route('/venues/search', methods=['POST', 'GET'])
 def search_venues():
-  form = VenueForm(request.form)
-
-  try:
-     venue = Venue(
-        name=form.name.data,
-        city=form.city.data,
-        state=form.state.data,
-        address=form.address.data,
-        phone=form.phone.data,
-        genres=form.genres.data,
-        image_link=form.image_link.data,
-        facebook_link=form.facebook_link.data,
-        website_link=form.website_link.data,
-        seeking_talent=form.seeking_talent.data,
-        seeking_description=form.seeking_description.data
-     )
-
-  finally:
-     db.session.add(venue)
-     db.session.commit()
-  
   # TODO: implement search on venues with partial string search. Ensure it is case-insensitive.
   # seach for Hop should return "The Musical Hop".
   # search for "Music" should return "The Musical Hop" and "Park Square Live Music & Coffee"
-  response={
-    "count": 1,
-    "data": [{
-      "id": 2,
-      "name": "The Dueling Pianos Bar",
-      "num_upcoming_shows": 0,
-    }]
-  }
+  # TODO: Done
+  search_term = request.form.get('search_term', '')
+  result = Venue.query.filter(Venue.name.ilike(f'%{search_term}%'))
+  response = {
+        "count": result.count(),
+        "data": result
+    }
   return render_template('pages/search_venues.html', results=response, search_term=request.form.get('search_term', ''))
 
 @app.route('/venues/<int:venue_id>')
