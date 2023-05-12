@@ -224,6 +224,7 @@ def create_venue_submission():
   form = VenueForm(request.form)
   # TODO: insert form data as a new Venue record in the db, instead
   # TODO: modify data to be the data object returned from db insertion
+  # TODO: Done
 
   # on successful db insert, flash success
   # flash('Venue ' + request.form['name'] + ' was successfully listed!')
