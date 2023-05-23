@@ -136,6 +136,7 @@ def show_venue(venue_id):
         'facebook_link': venue.facebook_link,
         'seeking_talent': venue.seeking_talent,
         'image_link': venue.image_link,
+        'seeking_description': venue.seeking_description,
         'past_shows': [{
             'artist_id': artist.id,
             "artist_name": artist.name,
@@ -270,6 +271,7 @@ def show_artist(artist_id):
       'state': artist.state,
       'phone': artist.phone,
       'website': artist.website_link,
+      'facebook_link': artist.facebook_link,
       'seeking_venue': artist.seeking_venue,
       'image_link': artist.image_link,
       'seeking_description': artist.seeking_description,
@@ -348,26 +350,54 @@ def edit_artist_submission(artist_id):
 
 @app.route('/venues/<int:venue_id>/edit', methods=['GET'])
 def edit_venue(venue_id):
-  form = VenueForm()
-  venue={
-    "id": 1,
-    "name": "The Musical Hop",
-    "genres": ["Jazz", "Reggae", "Swing", "Classical", "Folk"],
-    "address": "1015 Folsom Street",
-    "city": "San Francisco",
-    "state": "CA",
-    "phone": "123-123-1234",
-    "website": "https://www.themusicalhop.com",
-    "facebook_link": "https://www.facebook.com/TheMusicalHop",
-    "seeking_talent": True,
-    "seeking_description": "We are on the lookout for a local artist to play every two weeks. Please call us.",
-    "image_link": "https://images.unsplash.com/photo-1543900694-133f37abaaa5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=400&q=60"
-  }
+
+  venue = Venue.query.get(venue_id)
+  form = VenueForm(request.form)
+
+  form.name.process_data(venue.name)
+  form.city.process_data(venue.city)
+  form.state.process_data(venue.state)
+  form.address.process_data(venue.address)
+  form.phone.process_data(venue.phone)
+  form.genres.process_data(venue.genres)
+  form.facebook_link.process_data(venue.facebook_link)
+  form.image_link.process_data(venue.image_link)
+  form.website_link.process_data(venue.website_link)
+  form.seeking_talent.process_data(venue.seeking_talent)
+  form.seeking_description.process_data(venue.seeking_description)
+
   # TODO: populate form with values from venue with ID <venue_id>
+
   return render_template('forms/edit_venue.html', form=form, venue=venue)
 
 @app.route('/venues/<int:venue_id>/edit', methods=['POST'])
 def edit_venue_submission(venue_id):
+
+  venue = Venue.query.filter_by(id=venue_id).first_or_404()
+  form = VenueForm(request.form, meta={"csrf": False})
+  
+  try:
+      venue = Venue.query.get(venue_id)
+
+      venue.name = form.name.data
+      venue.city = form.city.data
+      venue.state = form.state.data
+      venue.address = form.address.data
+      venue.phone = form.phone.data
+      venue.genres = request.form.getlist('genres')
+      venue.facebook_link = form.facebook_link.data
+      venue.image_link = form.image_link.data
+      venue.website_link = form.website_link.data
+      venue.seeking_talent = form.seeking_talent.data
+      venue.seeking_description = form.seeking_description.data
+
+      db.session.add(venue)
+      db.session.commit()
+  except:
+      db.session.rollback()
+  finally:
+      db.session.close()
+
   # TODO: take values from the form submitted, and update existing
   # venue record with ID <venue_id> using the new attributes
   return redirect(url_for('show_venue', venue_id=venue_id))
