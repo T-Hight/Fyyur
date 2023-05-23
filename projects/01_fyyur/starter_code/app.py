@@ -15,7 +15,7 @@ from flask_wtf import Form
 from forms import *
 from flask_migrate import Migrate
 from datetime import datetime
-from models import *
+from models import db, Artist, Venue, Show
 #----------------------------------------------------------------------------#
 # App Config.
 #----------------------------------------------------------------------------#
@@ -23,7 +23,7 @@ from models import *
 app = Flask(__name__)
 moment = Moment(app)
 app.config.from_object('config')
-db = SQLAlchemy(app)
+db.init_app(app)
 migrate = Migrate(app, db)
 
 # TODO: connect to a local postgresql database
@@ -32,9 +32,6 @@ migrate = Migrate(app, db)
 #----------------------------------------------------------------------------#
 # Models.
 #----------------------------------------------------------------------------#
-
-# TODO Implement Show and Artist models, and complete all model relationships and properties, as a database migration.
-# TODO: Done
 
 #----------------------------------------------------------------------------#
 # Filters.
