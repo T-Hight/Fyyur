@@ -30,7 +30,7 @@ migrate = Migrate(app, db)
 # TODO: Done
 
 #----------------------------------------------------------------------------#
-# Models.
+# Models can be viewed in models.py
 #----------------------------------------------------------------------------#
 
 #----------------------------------------------------------------------------#
@@ -127,7 +127,7 @@ def show_venue(venue_id):
     data = {
         'name': venue.name,
         'id': venue.id,
-        #'genres': venue.genres,
+        'genres': venue.genres,
         'address': venue.address,
         'city': venue.city,
         'state': venue.state,
@@ -270,8 +270,9 @@ def show_artist(artist_id):
       'state': artist.state,
       'phone': artist.phone,
       'website': artist.website_link,
-      #'seeking_talent': artist.seeking_talent,
+      'seeking_venue': artist.seeking_venue,
       'image_link': artist.image_link,
+      'seeking_description': artist.seeking_description,
       'past_shows': [{
           'venue_id': venue.id,
           "venue_name": venue.name,
@@ -293,8 +294,22 @@ def show_artist(artist_id):
 #  ----------------------------------------------------------------
 @app.route('/artists/<int:artist_id>/edit', methods=['GET'])
 def edit_artist(artist_id):
-  form = ArtistForm()
-  # artist= 
+  
+  artist = Artist.query.get(artist_id)
+  form = ArtistForm(request.form)
+
+  form.name.process_data(artist.name)
+  form.city.process_data(artist.city)
+  form.state.process_data(artist.state)
+  form.phone.process_data(artist.phone)
+  form.genres.process_data(artist.genres)
+  form.facebook_link.process_data(artist.facebook_link)
+  form.image_link.process_data(artist.image_link)
+  form.website_link.process_data(artist.website_link)
+  form.seeking_venue.process_data(artist.seeking_venue)
+  form.seeking_description.process_data(artist.seeking_description)
+
+
   # TODO: populate form with fields from artist with ID <artist_id>
   return render_template('forms/edit_artist.html', form=form, artist=artist)
 
@@ -303,36 +318,31 @@ def edit_artist_submission(artist_id):
   # TODO: take values from the form submitted, and update existing
   # artist record with ID <artist_id> using the new attributes
 
-  # Not Done
+  # TODO: Done
 
   artist = Artist.query.filter_by(id=artist_id).first_or_404()
   form = ArtistForm(request.form, meta={"csrf": False})
-  if form.validate():
-    try:
-        artist.name = form.name.data,
-        artist.city = form.city.data,
-        artist.state = form.state.data,
-        artist.phone = form.phone.data,
-        artist.genres = form.genres.data,
-        artist.facebook_link = form.facebook_link.data,
-        artist.image_link = form.image_link.data,
-        artist.website = form.website_link.data,
-        artist.seeking_venue = form.seeking_venue.data,
-        artist.seeking_description = form.seeking_description.data
-        db.session.commit()
-        flash('The Artist ' + request.form['name'] + ' has been successfully updated!')
-    except ValueError as e:
-          print(e)
-          print(sys.exc_info())
-          db.session.rollback()
-          flash('Error! Artist could not be updated.')
-    finally:
-          db.session.close()
-  else:
-      message = []
-      for field, errors in form.errors.items():
-          message.append(form[field].label + ', '.join(errors))
-          flash('Errors: ' + '|'.join(message))
+  
+  try:
+      artist = Artist.query.get(artist_id)
+
+      artist.name = form.name.data
+      artist.city = form.city.data
+      artist.state = form.state.data
+      artist.phone = form.phone.data
+      artist.genres = request.form.getlist('genres')
+      artist.facebook_link = form.facebook_link.data
+      artist.image_link = form.image_link.data
+      artist.website = form.website_link.data
+      artist.seeking_venue = form.seeking_venue.data
+      artist.seeking_description = form.seeking_description.data
+
+      db.session.add(artist)
+      db.session.commit()
+  except:
+      db.session.rollback()
+  finally:
+      db.session.close()
 
   return redirect(url_for('show_artist', artist_id=artist_id))
 
