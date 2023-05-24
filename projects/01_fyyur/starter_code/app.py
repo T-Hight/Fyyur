@@ -102,58 +102,44 @@ def show_venue(venue_id):
   # shows the venue page with the given venue_id
   # TODO: replace with real venue data from the venues table, using venue_id
   # TODO: Done
-    venue = Venue.query.get(venue_id)
-
-    past_shows = db.session.query(Artist, Show).\
-        join(Show).join(Venue).\
-        filter (
-            Show.venue_id == venue.id,
-            Show.artist_id == Artist.id,
-            Show.start_time < datetime.now()
-        ).\
-        all()
-
-    upcoming_shows = db.session.query(Artist, Show).\
-        join(Show).join(Venue).\
-        filter(
-            Show.venue_id == venue_id,
-            Show.artist_id == Artist.id,
-            Show.start_time > datetime.now()
-        ).\
-        all()
-
-    venue = Venue.query.filter_by(id=venue_id).first_or_404()
-
-    data = {
-        'name': venue.name,
-        'id': venue.id,
-        'genres': venue.genres,
-        'address': venue.address,
-        'city': venue.city,
-        'state': venue.state,
-        'phone': venue.phone,
-        'website': venue.website_link,
-        'facebook_link': venue.facebook_link,
-        'seeking_talent': venue.seeking_talent,
-        'image_link': venue.image_link,
-        'seeking_description': venue.seeking_description,
-        'past_shows': [{
-            'artist_id': artist.id,
-            "artist_name": artist.name,
-            "artist_image_link": artist.image_link,
-            "start_time": show.start_time.strftime("%m/%d/%Y, %H:%M")
-        } for artist, show in past_shows],
-        'upcoming_shows': [{
-            'artist_id': artist.id,
-            'artist_name': artist.name,
-            'artist_image_link': artist.image_link,
-            'start_time': show.start_time.strftime("%m/%d/%Y, %H:%M")
-        } for artist, show in upcoming_shows],
-        'past_shows_count': len(past_shows),
-        'upcoming_shows_count': len(upcoming_shows)
-    }
-
-    return render_template('pages/show_venue.html', venue=data)
+  venue = Venue.query.get(venue_id)
+  shows = (
+            Show.query.join(Venue, Venue.id==Show.venue_id)
+            .filter(Venue.id==venue_id)
+            .all()
+            )
+  past_show = []
+  upcoming_show = []
+  for show in shows:
+      data_show = {
+        "artist_id": show.artist_id,
+        "artist_name": Artist.query.get(show.artist_id).name,
+        "artist_image_link": Artist.query.get(show.artist_id).image_link,
+        "start_time": str(show.start_time)
+        }
+      if show.start_time < datetime.now():
+          past_show.append(data_show)
+      else:
+          upcoming_show.append(data_show)
+  data={
+    "id": venue.id,
+    "name": venue.name,
+    "genres": venue.genres,
+    "address": venue.address,
+    "city": venue.city,
+    "state": venue.state,
+    "phone": venue.phone,
+    "website": venue.website_link,
+    "facebook_link": venue.facebook_link,
+    "seeking_talent": venue.seeking_talent,
+    "seeking_description": venue.seeking_description,
+    "image_link": venue.image_link,
+    "past_shows": past_show,
+    "upcoming_shows": upcoming_show,
+    "past_shows_count": len(past_show),
+    "upcoming_shows_count": len(upcoming_show),
+  }
+  return render_template('pages/show_venue.html', venue=data)
 
 #  Create Venue
 #  ----------------------------------------------------------------
