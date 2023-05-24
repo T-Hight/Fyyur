@@ -242,56 +242,38 @@ def show_artist(artist_id):
   # TODO: Done
 
   artist = Artist.query.get(artist_id)
-
-  past_shows = db.session.query(Venue, Show).\
-      join(Show).join(Artist).\
-      filter (
-          Show.artist_id == artist.id,
-          Show.venue_id == Venue.id,
-          Show.start_time > datetime.now()
-      ).\
-      all()
-
-  upcoming_shows = db.session.query(Venue, Show).\
-      join(Show).join(Artist).\
-      filter(
-          Show.artist_id == artist.id,
-          Show.venue_id == Venue.id,
-          Show.start_time > datetime.now()
-      ).\
-      all()
-  
-  artist = Artist.query.filter_by(id=artist_id).first_or_404()
-
-  data = {
-      'id': artist.id,
-      'name': artist.name,
-      'genres': artist.genres,
-      'city': artist.city,
-      'state': artist.state,
-      'phone': artist.phone,
-      'website': artist.website_link,
-      'facebook_link': artist.facebook_link,
-      'seeking_venue': artist.seeking_venue,
-      'image_link': artist.image_link,
-      'seeking_description': artist.seeking_description,
-      'past_shows': [{
-          'venue_id': venue.id,
-          "venue_name": venue.name,
-          "venue_image_link": venue.image_link,
-          "start_time": show.start_time.strftime("%m/%d/%Y, %H:%M")
-      } for venue, show in past_shows],
-      'upcoming_shows': [{
-          'venue_id': venue.id,
-          'venue_name': venue.name,
-          'venue_image_link': venue.image_link,
-          'start_time': show.start_time.strftime("%m/%d/%Y, %H:%M")
-      } for venue, show in upcoming_shows],
-      'past_shows_count': len(past_shows),
-      'upcoming_shows_count': len(upcoming_shows)
-  }
+  shows = Show.query.filter_by(artist_id=artist_id).all()
+  past_show = []
+  upcoming_show = []
+  for show in shows:
+      data_show={
+        "venue_id": show.venue_id,
+        "venue_name": Venue.query.get(show.venue_id).name,
+        "venue_image_link": Venue.query.get(show.venue_id).image_link,
+        "start_time": str(show.start_time)
+        }
+      if show.start_time < datetime.now():
+          past_show.append(data_show)
+      else:
+          upcoming_show.append(data_show)
+  data={
+    "id": artist.id,
+    "name": artist.name,
+    "genres": artist.genres,
+    "city": artist.city,
+    "state": artist.state,
+    "phone": artist.phone,
+    "website": artist.website_link,
+    "facebook_link": artist.facebook_link,
+    "seeking_venue": artist.seeking_venue,
+    "seeking_description": artist.seeking_description,
+    "image_link": artist.image_link,
+    "past_shows": past_show,
+    "upcoming_shows": upcoming_show,
+    "past_shows_count": len(past_show),
+    "upcoming_shows_count": len(upcoming_show),
+    }
   return render_template('pages/show_artist.html', artist=data)
-
 #  Update
 #  ----------------------------------------------------------------
 @app.route('/artists/<int:artist_id>/edit', methods=['GET'])
@@ -367,6 +349,7 @@ def edit_venue(venue_id):
   form.seeking_description.process_data(venue.seeking_description)
 
   # TODO: populate form with values from venue with ID <venue_id>
+  # TODO: Done
 
   return render_template('forms/edit_venue.html', form=form, venue=venue)
 
@@ -400,6 +383,7 @@ def edit_venue_submission(venue_id):
 
   # TODO: take values from the form submitted, and update existing
   # venue record with ID <venue_id> using the new attributes
+  # TODO: Done
   return redirect(url_for('show_venue', venue_id=venue_id))
 
 #  Create Artist
