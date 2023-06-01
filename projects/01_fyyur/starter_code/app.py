@@ -295,7 +295,8 @@ def edit_artist_submission(artist_id):
 
   artist = Artist.query.filter_by(id=artist_id).first_or_404()
   form = ArtistForm(request.form, meta={"csrf": False})
-  
+
+    
   try:
       artist = Artist.query.get(artist_id)
 
