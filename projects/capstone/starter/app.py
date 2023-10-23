@@ -15,7 +15,7 @@ def create_app(test_config=None):
   #else:
       #setup_db(app)
 
-  @app.route('/hello')
+  @app.route('/')
   def hello():
     return 'Hello, World!'
 
