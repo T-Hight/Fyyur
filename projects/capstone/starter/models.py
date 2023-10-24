@@ -1,5 +1,10 @@
 import os
 from flask_sqlalchemy import SQLAlchemy
+import json
+from flask_migrate import Migrate
+from sqlalchemy import ForeignKey, Column, String, Integer, \
+                    DateTime, create_engine
+from sqlalchemy.orm import relationship
 
 db_user = os.getenv('db_user', 'postgres')
 db_password = os.getenv('db_password', 'postgres')
@@ -16,6 +21,7 @@ def setup_db(app, database_path=db_path):
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     db.app = app
     db.init_app(app)
+    migrate = Migrate(app, db)
     with app.app_context():
         db.create_all()
 
@@ -24,7 +30,31 @@ class Movies(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(120))
-    release_date = db.Column(db.String(120))
+    release_date = db.Column(DateTime)
+    actors = relationship('Actors', backref="movie", lazy=True)
+
+    def __init__(self, title, release_date):
+        self.title = title
+        self.release_date = release_date
+
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def update(self):
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    def format(self):
+        return {
+            'id': self.id,
+            'title': self.title,
+            'release_date': self.release_date,
+            'actors': list(map(lambda actor: actor.format(), self.actors))
+        }
 
     def __repr__(self):
        return '<Movies {}'.format(self.name)
@@ -36,6 +66,33 @@ class Actors(db.Model):
     name = db.Column(db.String(120))
     age = db.Column(db.String(120))
     gender = db.Column(db.String(120))
+    movie_id = Column(Integer, ForeignKey('movies.id'), nullable=True)
+
+    def __init__(self, name, age, gender, movie_id):
+        self.name = name
+        self.age = age
+        self.gender = gender
+        self.movie_id = movie_id
+
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def update(self):
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    def format(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'age': self.age,
+            'gender': self.gender,
+            "movie_id": self.movie_id
+        }
 
     def __repr__(self):
        return '<Actors {}'.format(self.name)
