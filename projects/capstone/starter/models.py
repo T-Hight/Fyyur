@@ -28,9 +28,9 @@ def setup_db(app, database_path=db_path):
 class Movies(db.Model):
     __tablename__ = 'movies'
 
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(120))
-    release_date = db.Column(DateTime)
+    id = Column(Integer(), primary_key=True)
+    title = Column(String(120))
+    release_date = Column(DateTime)
     actors = relationship('Actors', backref="movie", lazy=True)
 
     def __init__(self, title, release_date):
@@ -53,19 +53,19 @@ class Movies(db.Model):
             'id': self.id,
             'title': self.title,
             'release_date': self.release_date,
-            'actors': list(map(lambda actor: actor.format(), self.actors))
+            'actors': [actor.format() for actor in self.actors]
         }
 
     def __repr__(self):
-       return '<Movies {}'.format(self.name)
+       return '<Movies {}'.format(self.title)
     
 class Actors(db.Model):
     __tablename__ = 'actors'
 
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(120))
-    age = db.Column(db.String(120))
-    gender = db.Column(db.String(120))
+    id = Column(Integer, primary_key=True)
+    name = Column(String(120))
+    age = Column(String(120))
+    gender = Column(String(120))
     movie_id = Column(Integer, ForeignKey('movies.id'), nullable=True)
 
     def __init__(self, name, age, gender, movie_id):
