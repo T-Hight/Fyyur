@@ -5,12 +5,13 @@ from flask_migrate import Migrate
 from sqlalchemy import ForeignKey, Column, String, Integer, \
                     DateTime, create_engine
 from sqlalchemy.orm import relationship
+from config import DBConfig, Auth0Config
 
 db_user = os.getenv('db_user', 'postgres')
 db_password = os.getenv('db_password', 'postgres')
 db_host = os.getenv('db_host', 'localhost:5432')
 db_name = os.getenv('db_name','Casting')
-db_path = 'postgresql+psycopg2://{}:{}@{}/{}'.format(
+db_path = 'postgresql://{}:{}@{}/{}'.format(
     db_user, db_password, db_host, db_name
 )
 
@@ -21,7 +22,7 @@ def setup_db(app, database_path=db_path):
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     db.app = app
     db.init_app(app)
-    migrate = Migrate(app, db)
+    #migrate = Migrate(app, db)
     with app.app_context():
         db.create_all()
 
