@@ -8,11 +8,16 @@ from auth import AuthError, requires_auth
 # add payload parameter to all functions
 
 
-def create_app(test_config=None):
+def create_app(db_URI="", test_config=None):
   # create and configure the app
   app = Flask(__name__)
-  setup_db(app)
-  CORS(app)
+  
+  CORS(app, resources={"/": {"origins": "*"}})
+  
+  if db_URI:
+    setup_db(app, db_URI)
+  else:
+     setup_db(app)
 
   @app.after_request
   def after_request(response):
@@ -21,7 +26,7 @@ def create_app(test_config=None):
         'Content-Type,Authorization,true')
     response.headers.add(
         'Access-Control-Allow-Methods',
-        'GET,PUT,POST,DELETE,OPTIONS')
+        'GET,PUT,PATCH,DELETE,OPTIONS')
     return response
 
 
@@ -341,7 +346,7 @@ def create_app(test_config=None):
       return jsonify({
           "success": False,
           "error": 422,
-          "message": "unprocessable"
+          "message": "Unprocessable"
       }), 422
   
   @app.errorhandler(404)
@@ -349,7 +354,7 @@ def create_app(test_config=None):
       return jsonify({
           "success": False,
           "error": 404,
-          "message": "resource not found"
+          "message": "Resource Not Found"
       }), 404
   
   @app.errorhandler(AuthError)
@@ -357,7 +362,7 @@ def create_app(test_config=None):
     return jsonify({
        "success": False,
        "error": 401,
-       "message": "unauthorized"
+       "message": "Unauthorized"
     }), 401
       
 
