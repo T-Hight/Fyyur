@@ -131,11 +131,11 @@ def verify_decode_jwt(token):
                 'description': 'Token expired.'
             }, 401)
 
-        except jwt.JWTClaimsError:
-            raise AuthError({
-                'code': 'invalid_claims',
-                'description': 'Incorrect claims. Please, check the audience and issuer.'
-            }, 401)
+        #except jwt.JWTClaimsError:
+            #raise AuthError({
+                #'code': 'invalid_claims',
+                #'description': 'Incorrect claims. Please, check the audience and issuer.'
+            #}, 401)
         except Exception:
             raise AuthError({
                 'code': 'invalid_header',
