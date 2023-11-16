@@ -2,8 +2,7 @@ import os
 from flask_sqlalchemy import SQLAlchemy
 import json
 from flask_migrate import Migrate
-from sqlalchemy import ForeignKey, Column, String, Integer, \
-                    DateTime, create_engine
+from sqlalchemy import ForeignKey, Column, String, Integer, DateTime
 from sqlalchemy.orm import relationship
 from config import DBConfig, Auth0Config
 
