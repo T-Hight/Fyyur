@@ -26,12 +26,6 @@ class CastingTestCase(unittest.TestCase):
         self.assistant_header = os.environ.get('ASSISTANT_TOKEN')
         self.director_header = os.environ.get('DIRECTOR_TOKEN')
         self.producer_header = os.environ.get('PRODUCER_TOKEN')
-
-        
-        
-        
-
-        
     
     def tearDown(self):
         """Executed after reach test"""
@@ -43,7 +37,7 @@ class CastingTestCase(unittest.TestCase):
         self.assertEqual(res.status_code, 200)
 
     def test_get_actors(self):
-        res = self.client().get('/actors', headers={'Authorization': self.producer_header})
+        res = self.client().get('/actors', headers={'Authorization': self.director_header})
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
