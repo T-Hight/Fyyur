@@ -341,6 +341,8 @@ def create_app(db_URI="", test_config=None):
       print(e)
       abort(422)
 
+  #ErrorHandlers
+
   @app.errorhandler(422)
   def unprocessable(error):
       return jsonify({
