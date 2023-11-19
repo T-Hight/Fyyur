@@ -1,7 +1,7 @@
 import json
 from flask import request, _request_ctx_stack, abort
 from functools import wraps
-import jwt
+from jose import jwt
 from urllib.request import urlopen
 from config import Auth0Config
 
@@ -95,7 +95,6 @@ def verify_decode_jwt(token):
                 'code': 'token_expired',
                 'description': 'Token expired.'
             }, 401)
-
         except jwt.JWTClaimsError:
             raise AuthError({
                 'code': 'invalid_claims',
