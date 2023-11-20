@@ -10,7 +10,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 #### Python
 
-Before getting started, you'll need to download [Python 3.7](https://www.python.org/downloads/release/python-370/). 
+Before getting started, you'll need to download Python. Instructions for downloading this version can be found here: [Python 3.7](https://www.python.org/downloads/release/python-370/)
 
 #### Virtual Environment
 
