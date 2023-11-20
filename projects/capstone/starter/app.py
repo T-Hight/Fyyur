@@ -374,4 +374,4 @@ def create_app(db_URI="", test_config=None):
 APP = create_app()
 
 if __name__ == '__main__':
-  APP.run(host='localhost', port=8100, debug=True)
+  APP.run(host='localhost', port=5000, debug=True)
