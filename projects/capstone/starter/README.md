@@ -1,6 +1,6 @@
-# Project Title
+# Casting Agency Capstone Project
 
-A short description about the project and/or client.
+The Casting Agency models a company that is responsible for creating movies and managing and assigning actors to those movies. You are an Executive Producer within the company and are creating a system to simplify and streamline your process.
 
 ## Getting Started
 
@@ -8,11 +8,21 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-The things you need before installing the software.
+#### Python
 
-* You need this
-* And you need this
-* Oh, and don't forget this
+Before getting started, you'll need to download [Python 3.7](https://www.python.org/downloads/release/python-370/). 
+
+#### Virtual Environment
+
+Next, you'll want to run a [virtual environment](https://docs.python.org/3/library/venv.html) to keep your dependencies seperate and organized.
+
+#### Dependencies
+
+After you have your virtual environment created and running, it's time to install the required dependencies for the project with:
+
+```bash
+pip install -r requirements.txt
+```
 
 ### Installation
 
