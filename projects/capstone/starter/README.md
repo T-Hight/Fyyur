@@ -14,7 +14,7 @@ Before getting started, you'll need to download Python. Instructions for downloa
 
 #### Virtual Environment
 
-Next, you'll want to run a [virtual environment](https://docs.python.org/3/library/venv.html) to keep your dependencies seperate and organized.
+Next, you'll want to run a virtual environment on your local machine to keep your dependencies seperate and organized. Instructions to create and run a virtual environment can be found here: [python docs](https://docs.python.org/3/library/venv.html) 
 
 #### Dependencies
 
