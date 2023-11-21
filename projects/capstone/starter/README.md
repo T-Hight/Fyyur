@@ -99,8 +99,142 @@ flask run --debug
      - can perform all actions
 7. Test your endpoints with [Postman](https://getpostman.com).
    
+### API Endpoint Behavior
+
+#### GET /actors
+
+This endpoint should be accessable by all parties and return a list of actors in json form.
+
+```
+{
+  "actors": [
+    {
+      "age": "43",
+      "gender": "male",
+      "id": 1,
+      "movie_id": 3,
+      "name": "Ray Charles"
+    },
+    {
+      "age": "23",
+      "gender": "male",
+      "id": 2,
+      "movie_id": 1,
+      "name": "Gus Demeter"
+    },
+    {
+      "age": "31",
+      "gender": "female",
+      "id": 3,
+      "movie_id": 2,
+      "name": "Sarah Chase"
+    }
+  ],
+  "success": true
+}
+```
+
+#### GET /actors/<int:id>
+
+This endpoint should be accessable by all parties and return a specified actor in json form.
+
+```
+{
+  "actors": [
+    {
+      "age": "43",
+      "gender": "male",
+      "id": 1,
+      "movie_id": 3,
+      "name": "Ray Charles"
+    }
+  ],
+  "success": true
+}
+```  
+
+#### GET /movies
+
+This endpoint should be accessable by all parties
+and return a list of movies.
+
+```
+{
+  "movies": [
+    {
+      "actors": [
+        {
+          "age": "23",
+          "gender": "male",
+          "id": 2,
+          "movie_id": 1,
+          "name": "Gus Demeter"
+        }
+      ],
+      "id": 1,
+      "release_date": "Tue, 06 Dec 1983 00:00:00 GMT",
+      "title": "Jaws"
+    },
+    {
+      "actors": [
+        {
+          "age": "31",
+          "gender": "female",
+          "id": 3,
+          "movie_id": 2,
+          "name": "Sarah Chase"
+        }
+      ],
+      "id": 2,
+      "release_date": "Fri, 11 Mar 1977 00:00:00 GMT",
+      "title": "Harold and Maude"
+    },
+    {
+      "actors": [
+        {
+          "age": "43",
+          "gender": "male",
+          "id": 1,
+          "movie_id": 3,
+          "name": "Ray Charles"
+        }
+      ],
+      "id": 3,
+      "release_date": "Sat, 15 Jun 2013 00:00:00 GMT",
+      "title": "Time Bandits"
+    }
+  ],
+  "success": true
+}
+```
 
 
 
+#### GET /movies/<int:id>
+
+This endpoint should be accessable by all parties
+and return a specified movie in json form.
+
+```
+{
+  "movies": [
+    {
+      "actors": [
+        {
+          "age": "23",
+          "gender": "male",
+          "id": 2,
+          "movie_id": 1,
+          "name": "Gus Demeter"
+        }
+      ],
+      "id": 1,
+      "release_date": "Tue, 06 Dec 1983 00:00:00 GMT",
+      "title": "Jaws"
+    },
+  ],
+  "success": true
+}
+```
 
 
