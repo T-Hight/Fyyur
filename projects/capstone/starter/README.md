@@ -23,47 +23,48 @@ After you have your virtual environment created and running, it's time to instal
 ```bash
 pip install -r requirements.txt
 ```
+This will install all of the required packages within the **requirements.txt** file.
 
-### Installation
+#### Key Pip Dependencies
 
-A step by step guide that will tell you how to get the development environment up and running.
+- [Flask](http://flask.pocoo.org/) is a lightweight backend microservices framework. Flask is required to handle requests and responses.
 
+- [SQLAlchemy](https://www.sqlalchemy.org/) is the Python SQL toolkit and ORM we'll use to handle the lightweight SQL database. You'll primarily work in `app.py`and can reference `models.py`.
+
+- [PostgreSQL](https://www.postgresql.org/) and [psycopg2](https://pypi.org/project/psycopg2/) to handle data persistence and database management.
+
+- [Flask-CORS](https://flask-cors.readthedocs.io/en/latest/#) is the extension we'll use to handle cross-origin requests from our frontend server.
+
+- [jose](https://python-jose.readthedocs.io/en/latest/) is JavaScript Object Signing and Encryption for JWTs. Useful for encoding, decoding, and verifying JWTS.
+
+- [Auth0](https://auth0.com/) to manage authentication and permissions.
+
+### Set up the Database
+
+With Postgres running, create a `Casting` database:
+
+```bash
+createdb Casting
 ```
-$ First step
-$ Another step
-$ Final step
+
+Populate the database using the `Casting.psql` file provided. From the `capstone` folder in terminal run:
+
+```bash
+psql Casting < Casting.psql
 ```
 
-## Usage
+### Run the Server
 
-A few examples of useful commands and/or tasks.
+From within the `capstone` folder, first ensure you are working using your created virtual environment.
 
+To run the server using your GIT Bash Terminal, execute:
+
+```bash
+$ bash setup.sh
+$ export FLASK_APP=app.py
+$ export FLASK_ENV=development
+$ flask run --debug
 ```
-$ First example
-$ Second example
-$ And keep this in mind
-```
 
-## Deployment
 
-Additional notes on how to deploy this on a live or release system. Explaining the most important branches, what pipelines they trigger and how to update the database (if anything special).
 
-### Server
-
-* Live:
-* Release:
-* Development:
-
-### Branches
-
-* Master:
-* Feature:
-* Bugfix:
-* etc...
-
-## Additional Documentation and Acknowledgments
-
-* Project folder on server:
-* Confluence link:
-* Asana board:
-* etc...
