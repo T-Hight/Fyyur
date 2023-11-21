@@ -105,7 +105,7 @@ flask run --debug
 
 This endpoint should be accessable by all parties and return a list of actors in json form.
 
-```
+```json
 {
   "actors": [
     {
@@ -138,7 +138,7 @@ This endpoint should be accessable by all parties and return a list of actors in
 
 This endpoint should be accessable by all parties and return a specified actor in json form.
 
-```
+```json
 {
   "actors": [
     {
@@ -156,9 +156,9 @@ This endpoint should be accessable by all parties and return a specified actor i
 #### GET /movies
 
 This endpoint should be accessable by all parties
-and return a list of movies.
+and return a list of movies in json form.
 
-```
+```json
 {
   "movies": [
     {
@@ -215,7 +215,7 @@ and return a list of movies.
 This endpoint should be accessable by all parties
 and return a specified movie in json form.
 
-```
+```json
 {
   "movies": [
     {
@@ -237,4 +237,206 @@ and return a specified movie in json form.
 }
 ```
 
+#### POST /actors
 
+This endpoint should be accessable by Casting Directors 
+and Executive Producers only and return a list of actors including the newly added actor in json form.
+
+```json
+{
+  "actors": [
+    {
+      "age": "43",
+      "gender": "male",
+      "id": 1,
+      "movie_id": 3,
+      "name": "Ray Charles"
+    },
+    {
+      "age": "23",
+      "gender": "male",
+      "id": 2,
+      "movie_id": 1,
+      "name": "Gus Demeter"
+    },
+    {
+      "age": "31",
+      "gender": "female",
+      "id": 3,
+      "movie_id": 2,
+      "name": "Sarah Chase"
+    },
+    {
+      "age": "77",
+      "gender": "female",
+      "id": 4,
+      "movie_id": 4,
+      "name": "Susan Saranwrap"
+    }
+  ],
+  "success": true
+}
+```
+
+#### POST /movies
+
+This endpoint should be accessable by Executive Producers only and return a list of movies including the newly added movie in json form.
+
+```json
+{
+  "movies": [
+    {
+      "actors": [
+        {
+          "age": "23",
+          "gender": "male",
+          "id": 2,
+          "movie_id": 1,
+          "name": "Gus Demeter"
+        }
+      ],
+      "id": 1,
+      "release_date": "Tue, 06 Dec 1983 00:00:00 GMT",
+      "title": "Jaws"
+    },
+    {
+      "actors": [
+        {
+          "age": "31",
+          "gender": "female",
+          "id": 3,
+          "movie_id": 2,
+          "name": "Sarah Chase"
+        }
+      ],
+      "id": 2,
+      "release_date": "Fri, 11 Mar 1977 00:00:00 GMT",
+      "title": "Harold and Maude"
+    },
+    {
+      "actors": [
+        {
+          "age": "43",
+          "gender": "male",
+          "id": 1,
+          "movie_id": 3,
+          "name": "Ray Charles"
+        }
+      ],
+      "id": 3,
+      "release_date": "Sat, 15 Jun 2013 00:00:00 GMT",
+      "title": "Time Bandits"
+    },
+    {
+      "actors": [
+        {
+          "age": "77",
+          "gender": "female",
+          "id": 4,
+          "movie_id": 4,
+          "name": "Susan Saranwrap"
+        }
+      ],
+      "id": 4,
+      "release_date": "Mon, 01 Jan 2023 00:00:00 GMT",
+      "title": "Clockwork Tangerine"
+    }
+  ],
+  "success": true
+}
+```
+
+#### PATCH /actors/<int:id>
+
+This endpoint should be accessable by Casting Directors 
+and Executive Producers only and should return a patched actor's information in json form
+
+
+```json
+{
+  "actors": [
+    {
+      "age": "44",
+      "gender": "male",
+      "id": 1,
+      "movie_id": 3,
+      "name": "Ray Charles"
+    }
+  ],
+  "success": true
+}
+```  
+
+#### PATCH /movies/<int:id>
+
+This endpoint should be accessable by Casting Directors 
+and Executive Producers only and should return a patched movie's information in json form
+
+```json
+{
+  "movies": [
+    {
+      "actors": [
+        {
+          "age": "23",
+          "gender": "male",
+          "id": 2,
+          "movie_id": 1,
+          "name": "Gus Demeter"
+        },
+        {
+          "age": "10",
+          "gender": "male",
+          "id": 5,
+          "movie_id": 1,
+          "name": "Timmy O'Neil"
+        }
+      ],
+      "id": 1,
+      "release_date": "Tue, 06 Dec 1983 00:00:00 GMT",
+      "title": "Jaws"
+    },
+  ],
+  "success": true
+}
+```
+
+#### DELETE /actors/<int:id>
+
+This endpoint should be accessable by Casting Directors 
+and Executive Producers only and should return information in json form
+
+```json
+{
+    "deleted": 1,
+    "success": true
+}
+```
+
+#### DELETE /movies/<int:id>
+
+This endpoint should be accessable by Executive Producers only and should return information in json form
+
+```json
+{
+    "deleted": 1,
+    "success": true
+}
+```
+
+### Error Handling
+
+Errors are returned as JSON objects in the following format:
+```json
+{
+    "error": 401,
+    "message": "Unauthorized",
+    "success": false
+}
+
+```
+The API will return four error types when requests fail:
+- 401: Unauthorized
+- 404: Resource Not Found
+- 422: Unprocessable 
+- 500: Internal Server Error
