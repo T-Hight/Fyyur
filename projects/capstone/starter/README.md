@@ -99,7 +99,7 @@ flask run --debug
      - can perform all actions
 7. Test your endpoints with [Postman](https://getpostman.com).
    
-### API Endpoint Behavior
+## API Endpoint Behavior
 
 #### GET /actors
 
