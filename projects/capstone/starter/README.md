@@ -4,7 +4,7 @@ The Casting Agency models a company that is responsible for creating movies and 
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
 ### Prerequisites
 
@@ -60,11 +60,47 @@ From within the `capstone` folder, first ensure you are working using your creat
 To run the server using your GIT Bash Terminal, execute:
 
 ```bash
-$ bash setup.sh
-$ export FLASK_APP=app.py
-$ export FLASK_ENV=development
-$ flask run --debug
+bash setup.sh
+export FLASK_APP=app.py
+export FLASK_ENV=development
+flask run --debug
 ```
+
+### Setup Auth0
+
+1. Create a new Auth0 Account
+2. Select a unique tenant domain
+3. Create a new, single page web application called 'Casting'
+4. Create a new API
+   - in API Settings:
+     - Enable RBAC
+     - Enable Add Permissions in the Access Token
+5. Create new API permissions:
+   - `get:actors`
+   - `get:movies`
+   - `post:actors`
+   - `post:movies`
+   - `patch:actors`
+   - `patch:movies`
+   - `delete:actors`
+   - `delete:movies`
+6. Create new roles for:
+   - Casting Assistant
+     - can `get:actors`
+     - can `get:movies`
+   - Casting Director
+     - can `get:actors`
+     - can `get:movies`
+     - can `post:actors`
+     - can `patch:actors`
+     - can `patch:movies`
+     - can `delete:actors`
+   - Executive Producer
+     - can perform all actions
+7. Test your endpoints with [Postman](https://getpostman.com).
+   
+
+
 
 
 
