@@ -5,11 +5,9 @@ from flask_cors import CORS
 from models import setup_db, Movies, Actors
 from datetime import datetime
 from auth import AuthError, requires_auth
-# add payload parameter to all functions
-
 
 def create_app(db_URI="", test_config=None):
-  # create and configure the app
+ 
   app = Flask(__name__)
   
   CORS(app, resources={"/": {"origins": "*"}})
@@ -374,4 +372,4 @@ def create_app(db_URI="", test_config=None):
 APP = create_app()
 
 if __name__ == '__main__':
-  APP.run(host='localhost', port=5000, debug=True)
+  APP.run(host='0.0.0.0', port=8080, debug=True)
