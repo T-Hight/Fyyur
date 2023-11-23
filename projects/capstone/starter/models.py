@@ -6,17 +6,17 @@ from sqlalchemy import ForeignKey, Column, String, Integer, DateTime
 from sqlalchemy.orm import relationship
 from config import DBConfig, Auth0Config
 
-db_user = os.getenv('db_user', 'postgres')
-db_password = os.getenv('db_password', 'postgres')
-db_host = os.getenv('db_host', 'localhost:5432')
-db_name = os.getenv('db_name','Casting')
-db_path = 'postgresql://{}:{}@{}/{}'.format(
-    db_user, db_password, db_host, db_name
-)
+#db_user = os.getenv('db_user', 'postgres')
+#db_password = os.getenv('db_password', 'postgres')
+#db_host = os.getenv('db_host', 'localhost:5432')
+#db_name = os.getenv('db_name','Casting')
+#db_path = 'postgresql://{}:{}@{}/{}'.format(
+    #db_user, db_password, db_host, db_name
+#)
 
 db = SQLAlchemy()
 
-def setup_db(app, database_path=db_path):
+def setup_db(app, database_path):
     app.config["SQLALCHEMY_DATABASE_URI"] = database_path
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     db.app = app
