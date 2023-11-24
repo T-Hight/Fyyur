@@ -98,6 +98,23 @@ flask run --debug
    - Executive Producer
      - can perform all actions
 7. Test your endpoints with [Postman](https://getpostman.com).
+
+### Deployment
+
+- The app is deployed on [Render](https://capstone-uzh7.onrender.com/)
+- Render Postgres **DATABASE** details are available in `setup.sh` file for reference.
+
+Use the above stated endpoints and append to this link above to execute the app either thru CURL or Postman.
+For example:
+
+```bash
+$ curl -X GET https://capstone-uzh7.onrender.com/
+$ curl -X POST https://capstone-uzh7.onrender.com/actors
+$ curl -X PATCH https://capstone-uzh7.onrender.com/actors/1
+$ curl -X DELETE https://capstone-uzh7.onrender.com/actors/1
+```
+
+Similarly, you can build these for /movies endpoints too.
    
 ## API Endpoint Behavior
 
