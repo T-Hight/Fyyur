@@ -13,10 +13,14 @@ from config import DBConfig, Auth0Config
 #db_path = 'postgresql://{}:{}@{}/{}'.format(
     #db_user, db_password, db_host, db_name
 #)
+database_path = os.environ['DATABASE_URL']
+if database_path.startswith("postgres://"):
+  database_path = database_path.replace("postgres://", "postgresql://", 1)
+
 
 db = SQLAlchemy()
 
-def setup_db(app, database_path):
+def setup_db(app, database_path=database_path):
     app.config["SQLALCHEMY_DATABASE_URI"] = database_path
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     db.app = app
